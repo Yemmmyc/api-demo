@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api-demo
+  template:
+    metadata:
+      labels:
+        app: api-demo
+    spec:
+      containers:
+      - name: api-demo
+        image: yemisi76/api-demo:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 4000
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 4000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 4000
+          initialDelaySeconds: 5
+          periodSeconds: 10
